@@ -1,0 +1,4 @@
+{
+	"main":"fr.wseduc.pdfgenerator.PDFGenerator",
+	"worker": true
+}

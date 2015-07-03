@@ -1,0 +1,62 @@
+apply from: "gradle/vertx.gradle"
+
+repositories {
+	mavenCentral()
+	maven {
+		url "http://maven.web-education.net/nexus/content/groups/public"
+	}
+}
+
+dependencies{
+	compile "org.xhtmlrenderer:flying-saucer-pdf:$flyingSaucerVersion"
+}
+
+javadoc {
+  options.encoding = 'UTF-8'
+  classpath  = configurations.provided
+  classpath += configurations.compile
+}
+
+configurations.all {
+	resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+task testJar(type: Jar) {
+	classifier = 'tests'
+	from sourceSets.test.output
+}
+
+task deploymentJar(type: Jar) {
+	classifier = 'deployment'
+	from 'deployment'
+}
+
+artifacts {
+	archives testJar
+	archives deploymentJar
+}
+
+def configurePom(def pom) {
+	pom.project {
+		description 'pdf-generator'
+		inceptionYear '2014'
+		packaging 'zip'
+		url 'http://code.web-education.net/vertx/pdf-generator'
+
+		developers {
+			developer {
+				id 'jelb'
+				name 'Julien Elbaz'
+				email 'julien.elbaz@web-education.net'
+			}
+		}
+
+		scm {
+			url 'git@code.web-education.net:vertx/pdf-generator.git'
+		}
+
+		properties {
+			setProperty('project.build.sourceEncoding', 'UTF8')
+		}
+	}
+}
