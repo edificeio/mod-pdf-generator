@@ -12,7 +12,8 @@ Below is a short description of the json message syntax :
 ```javascript
 {
     "content": //Array of bytes, containing the xml/xhtml to parse & render.
-    "encoding": //Content encoding, default is UTF-8.
+    "encoding": //[Optional] Content encoding, default is UTF-8.
+    "baseUrl": //[Optional] Location to find data resources if they are included in the PDF (such as images). 
 }
 ```
 

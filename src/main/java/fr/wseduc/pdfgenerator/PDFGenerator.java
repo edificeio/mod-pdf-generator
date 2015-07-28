@@ -39,7 +39,7 @@ public class PDFGenerator extends BusModBase implements Handler<Message<JsonObje
 			}
 
 			//Actual pdf rendering
-			renderer.setDocumentFromString(content, baseUrl);
+			renderer.setDocumentFromString(content, message.body().getString("baseUrl", baseUrl));
 			renderer.layout();
 			renderer.createPDF(binaryOutput);
 
