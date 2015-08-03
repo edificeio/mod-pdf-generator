@@ -38,6 +38,7 @@ artifacts {
 
 def configurePom(def pom) {
 	pom.project {
+		name 'mod-pdf-generator'
 		description 'pdf-generator'
 		inceptionYear '2015'
 		packaging 'zip'
@@ -53,6 +54,14 @@ def configurePom(def pom) {
 
 		scm {
 			url 'git@github.com:web-education/mod-pdf-generator.git'
+		}
+
+		licenses {
+			license {
+        		name 'GNU General Public License'
+        		url 'http://www.gnu.org/licenses/gpl-3.0.txt'
+				distribution 'repo'
+			}
 		}
 
 		properties {
