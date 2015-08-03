@@ -1,6 +1,0 @@
-{
-	"name": "fr.wseduc~pdf-generator~0.1-SNAPSHOT",
-	"config":{
-		"main":"fr.wseduc.pdfgenerator.PDFGenerator"
-	}
-}
