@@ -1,4 +1,10 @@
 {
 	"main":"fr.wseduc.pdfgenerator.PDFGenerator",
-	"worker": true
+	"worker": true,
+	"description": "Neo4j worker module wrapping the Flying Saucer library to generate a PDF from XHTML/XML content.",
+	"licenses": ["The GNU General Public License, Version 3"],
+	"author": "WebServices pour l'Education",
+	"keywords": ["pdf", "flyingsaucer"],
+	"homepage": "https://github.com/web-education/mod-pdf-generator",
+	"developers": ["Julien Elbaz"]
 }
