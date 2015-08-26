@@ -21,7 +21,7 @@ public class PDFGenerator extends BusModBase implements Handler<Message<JsonObje
 	@Override
 	public void start(){
 		super.start();
-		vertx.eventBus().registerHandler(config.getString("pdf-generator-address", "entcore.pdf.generator"), this);
+		vertx.eventBus().registerHandler(config.getString("address", "entcore.pdf.generator"), this);
 		baseUrl = config.getString("baseUrl", "");
 	}
 
