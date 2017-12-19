@@ -1,40 +1,72 @@
-apply from: "gradle/vertx.gradle"
+
+plugins {
+  id 'java'
+  id 'com.github.johnrengelman.shadow' version '2.0.1'
+}
 
 repositories {
-	mavenCentral()
-	maven {
-		url "http://maven.web-education.net/nexus/content/groups/public"
-	}
+  mavenLocal()
+    maven {
+      url "http://maven.web-education.net/nexus/content/repositories/releases/"
+    }
+  mavenCentral()
+    maven {
+      url "https://oss.sonatype.org/content/repositories/iovertx-3720/"
+    }
+}
+
+configurations {
+  provided
+    runtime.exclude module: 'vertx-core'
+}
+
+sourceSets {
+  main { compileClasspath += configurations.provided }
+}
+
+configurations.all {
+  resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileJava {
+  sourceCompatibility = project.sourceCompatibility
+    targetCompatibility = project.targetCompatibility
+}
+
+compileTestJava {
+  sourceCompatibility = project.sourceCompatibility
+    targetCompatibility = project.targetCompatibility
 }
 
 dependencies{
+  compileOnly "io.vertx:vertx-core:$vertxVersion"
+  compile "fr.wseduc:web-utils:$webutilsVersion"
 	compile "org.xhtmlrenderer:flying-saucer-pdf:$flyingSaucerVersion"
 }
 
-javadoc {
-  options.encoding = 'UTF-8'
-  classpath  = configurations.provided
-  classpath += configurations.compile
+jar {
+  manifest {
+    attributes(
+        "Main-Verticle": "service:mod"
+        )
+  }
+}
+
+shadowJar {
+  classifier = 'fat'
+    archiveName = "org.entcore~${project.name}~$version-$classifier.$extension"
+    mergeServiceFiles {
+      include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
+    }
 }
 
 configurations.all {
 	resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
-task testJar(type: Jar) {
-	classifier = 'tests'
-	from sourceSets.test.output
-}
-
-task deploymentJar(type: Jar) {
-	classifier = 'deployment'
-	from 'deployment'
-}
-
-artifacts {
-	archives testJar
-	archives deploymentJar
-}
 
 def configurePom(def pom) {
 	pom.project {

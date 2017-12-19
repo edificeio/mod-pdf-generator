@@ -20,10 +20,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import io.vertx.core.Handler;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonObject;
 import org.vertx.java.busmods.BusModBase;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonObject;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 public class PDFGenerator extends BusModBase implements Handler<Message<JsonObject>> {
@@ -39,7 +39,7 @@ public class PDFGenerator extends BusModBase implements Handler<Message<JsonObje
 		super.start();
 		final String address = config.getString("address", "entcore.pdf.generator");
 		logger.info("Starting PdfGenerator - address : " + address);
-		vertx.eventBus().registerHandler(address, this);
+		vertx.eventBus().consumer(address, this);
 		baseUrl = config.getString("baseUrl", "");
 	}
 
@@ -61,7 +61,7 @@ public class PDFGenerator extends BusModBase implements Handler<Message<JsonObje
 			renderer.layout();
 			renderer.createPDF(binaryOutput);
 
-			sendOK(message, new JsonObject().putBinary("content", binaryOutput.toByteArray()));
+			sendOK(message, new JsonObject().put("content", binaryOutput.toByteArray()));
 		} catch (UnsupportedEncodingException encexp) {
 			sendError(message, "invalid.encoding", encexp);
 		} catch (Exception exc) {
