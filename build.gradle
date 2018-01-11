@@ -1,6 +1,7 @@
 
 plugins {
   id 'java'
+  id 'maven-publish'
   id 'com.github.johnrengelman.shadow' version '2.0.1'
 }
 
@@ -57,47 +58,39 @@ jar {
 
 shadowJar {
   classifier = 'fat'
-    archiveName = "org.entcore~${project.name}~$version-$classifier.$extension"
+    archiveName = "${modowner}~${modname}~$version-$classifier.$extension"
     mergeServiceFiles {
       include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
     }
 }
 
-configurations.all {
-	resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+publishing {
+  repositories {
+    if (version.endsWith("SNAPSHOT")) {
+      maven {
+        name 'Snapshots'
+          url 'https://maven.opendigitaleducation.com/nexus/content/repositories/snapshots/'
+          credentials {
+            username "${odeUsername}"
+              password "${odePassword}"
+          }
+      }
+    } else {
+      maven {
+        name 'Releases'
+          url 'https://maven.opendigitaleducation.com/nexus/content/repositories/releases/'
+          credentials {
+            username "${odeUsername}"
+              password "${odePassword}"
+          }
+      }
+    }
+  }
+  publications {
+    maven(MavenPublication) {
+      groupId "${modowner}"
+      artifact("build/libs/${modowner}~${modname}~$version-fat.jar") { classifier "fat" }
+    }
+  }
 }
 
-
-def configurePom(def pom) {
-	pom.project {
-		name 'mod-pdf-generator'
-		description 'pdf-generator'
-		inceptionYear '2015'
-		packaging 'zip'
-		url 'https://github.com/web-education/mod-pdf-generator'
-
-		developers {
-			developer {
-				id 'jelb'
-				name 'Julien Elbaz'
-				email 'julien.elbaz@web-education.net'
-			}
-		}
-
-		scm {
-			url 'git@github.com:web-education/mod-pdf-generator.git'
-		}
-
-		licenses {
-			license {
-        		name 'GNU General Public License'
-        		url 'http://www.gnu.org/licenses/gpl-3.0.txt'
-				distribution 'repo'
-			}
-		}
-
-		properties {
-			setProperty('project.build.sourceEncoding', 'UTF8')
-		}
-	}
-}
