@@ -24,6 +24,14 @@
         <url>https://github.com/opendigitaleducation/mod-pdf-generator</url>
     </scm>
 
+    <repositories>
+        <repository>
+            <id>ode</id>
+            <name>ODE Repository</name>
+            <url>https://maven.opendigitaleducation.com/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>io.vertx</groupId>
