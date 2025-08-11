@@ -1,3 +1,10 @@
+# À propos de mod-pdf-generator
+    
+* Licence : [GPL v3](http://www.gnu.org/licenses/gpl.txt) - Copyright Edifice
+* Financeur(s) : Edifice
+* Développeur(s) : Edifice
+* Description : module asynchrone de génération pdf pour vertx.
+
 # Vertx pdf-generator
 
 This vert.x **worker** module generates PDF documents given an XHTML/XML input.
