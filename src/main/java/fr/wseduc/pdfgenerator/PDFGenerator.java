@@ -39,7 +39,7 @@ public class PDFGenerator extends BusModBase implements Handler<Message<JsonObje
 		super.start();
 		final String address = config.getString("address", "entcore.pdf.generator");
 		logger.info("Starting PdfGenerator - address : " + address);
-		vertx.eventBus().consumer(address, this);
+		vertx.eventBus().localConsumer(address, this);
 		baseUrl = config.getString("baseUrl", "");
 	}
 
